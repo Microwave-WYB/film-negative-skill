@@ -6,7 +6,7 @@ license: MIT
 
 # Film negative development
 
-Use darktable's negadoctor workflow to produce natural, scene-aware positives. This is a procedure, not a universal film-stock preset. Do not assume one Aerocolor recipe works for every roll, scanner, light source, or scene.
+Use darktable's negadoctor workflow to produce natural, scene-aware positives. This is a procedure, not a universal film-stock preset. Do not assume one preset works for every roll, scanner, light source, or scene.
 
 ## Dependencies and boundaries
 
@@ -51,14 +51,14 @@ Follow the module's GUI control order: film stock, film properties, corrections,
 1. **Film stock and base (D min):** choose color or black-and-white. For color, measure a clean unexposed film border, or a separate unexposed frame from the same roll under the same scanning conditions. Reuse this measured base only for frames sharing those conditions. If no base reference exists, disclose the uncertainty and request one; never present a guessed stock preset as a measurement.
 2. **Density range (D max):** sample exposed image content, excluding the film border. Check highlight clipping and adjust per frame where needed.
 3. **Scan exposure bias:** use image content/dark lowlights, excluding the border; inspect shadow clipping.
-4. **Color corrections:** correct shadows before highlights, and only when needed. Use plausible scene-specific neutral gray references, not simply a bright patch. Terracotta, brick, colored glass, painted walls, foliage, sunset light, and warm interiors are not neutral targets. Do not remove deliberate warmth or natural coolness in shadows just to make channel averages equal. When no reliable neutral exists, compare alternatives and ask the user rather than forcing gray-world balance.
-5. **Print properties:** adjust paper black, grade/contrast, gloss/highlight compression, and print exposure. Preserve highlight detail and shadow separation without flattening the scene. Assess skin, foliage, sky, saturated surfaces, and mixed light when present.
+4. **Color corrections:** correct shadows before highlights, and only when needed. Use reliable neutral references, respecting scene lighting and inherent colors. Without a trustworthy neutral reference, compare alternatives and ask the user rather than forcing neutral balance.
+5. **Print properties:** adjust paper black, grade/contrast, gloss/highlight compression, and print exposure. Preserve highlight detail, shadow separation, and scene color relationships without flattening the image.
 
 Roll-level film-base calibration is reusable; neutral references, exposure, and creative tone decisions are not automatically transferable to every scene.
 
 ## 4. Render previews and obtain approval
 
-Render a representative set first: include different lighting, exposures, skin tones, saturated objects, and difficult shadows/highlights. Review at useful viewing size and inspect detail crops. Create labeled negative/positive comparisons with matching frame IDs, inclusion count, crop, and agreed orientation. If building the negative view outside darktable, convert from its actual embedded/known source ICC to the display profile; never merely label linear RGB data as sRGB. Ask when the source profile is unknown.
+Render a representative set first, covering the range of lighting, exposure, color, and tonal conditions present. Review at useful viewing size and inspect detail crops. Create labeled negative/positive comparisons with matching frame IDs, inclusion count, crop, and agreed orientation. If building the negative view outside darktable, convert from its actual embedded/known source ICC to the display profile; never merely label linear RGB data as sRGB. Ask when the source profile is unknown.
 
 The following POSIX-shell template assumes `INPUT_COPY` and `XMP` identify a working input and verified sidecar; `OUTPUT` is a new preview JPEG filename and `JOB` is a dedicated job directory. Create its `config`, `cache`, and `tmp` subdirectories first. `SRGB` is supported by some releases; verify the installed profile name before use. This preview example does not prescribe final delivery settings.
 
