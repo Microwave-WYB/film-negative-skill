@@ -56,7 +56,7 @@ Follow the module's GUI control order: film stock, film properties, corrections,
 
 Roll-level film-base calibration is reusable; neutral references, exposure, and creative tone decisions are not automatically transferable to every scene.
 
-## 4. Render previews and obtain approval
+## 4. Render previews and iterate with the user
 
 Render a representative set first, covering the range of lighting, exposure, color, and tonal conditions present. Review at useful viewing size and inspect detail crops. Create labeled negative/positive comparisons with matching frame IDs, inclusion count, crop, and agreed orientation. If building the negative view outside darktable, convert from its actual embedded/known source ICC to the display profile; never merely label linear RGB data as sRGB. Ask when the source profile is unknown.
 
@@ -73,7 +73,9 @@ darktable-cli "$INPUT_COPY" "$XMP" "$OUTPUT" \
 
 The JPEG extension selects the export format. The documented JPEG quality configuration is an export option, not a negadoctor setting. Review all enabled histories/defaults in the isolated configuration. Capture exit status and logs, and inspect the rendered file, dimensions, embedded output profile, clipping, and orientation; a successful process alone does not establish correct color.
 
-Show previews and disclose uncertainties. Obtain explicit approval of the look, frame selection, orientations, requested export settings, and output names **before batch exports**. Revise and re-preview if approval conditions change.
+Show previews and disclose uncertainties. Obtain explicit approval of the look, frame selection, orientations, requested export settings, and output names **before batch exports**.
+
+Representative preview approval is not final roll approval. Present a full-roll contact sheet or previews covering every included frame, collect user feedback across frames and scenes, revise requested frames or shared adjustments, and re-preview. Preserve accepted results and check that shared changes do not regress other frames. Repeat until the user explicitly confirms satisfaction with the entire roll before final delivery.
 
 ## 5. Deliver as requested
 
