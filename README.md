@@ -1,6 +1,6 @@
 # Film Negative Skill
 
-An instruction-only agent skill for developing scanned or camera-digitized film negatives with **darktable-cli** and **negadoctor**. It covers roll-specific film-base calibration, scene-aware color correction, independent edit histories, preview approval, and verified full-resolution delivery.
+An instruction-only agent skill for developing scanned or camera-digitized film negatives with **darktable-cli** and **negadoctor**. It covers roll-specific film-base calibration, scene-aware color correction, independent edit histories, preview approval, and user-directed delivery.
 
 No bundled scripts, Python dependency, or universal film-stock preset. Install darktable separately; a GUI-authored sidecar may be required if the installed module schema cannot be verified safely.
 
