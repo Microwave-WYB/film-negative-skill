@@ -6,7 +6,7 @@ No bundled scripts, Python dependency, or universal film-stock preset. Install d
 
 ## Install
 
-After this repository is published:
+Install with the Skills CLI:
 
 ```sh
 npx skills add Microwave-WYB/film-negative-skill
