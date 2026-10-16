@@ -42,6 +42,7 @@ For camera scans, separate scan-light calibration from the original scene's ligh
 
 - Use a no-film image of the scanning light to establish white balance when available; avoid clipping during capture.
 - Use the appropriate standard/enhanced camera matrix as input profile, or a verified scanner/input ICC for scanner files. Do not assign a camera matrix to an already color-managed scan.
+- Enable lens correction for camera scans, with the taking lens correctly identified; verify the auto-detected lens, focal length, and aperture rather than assuming. Skip for flatbed scans, which involve no camera lens.
 - Follow negadoctor's documented working profile guidance (linear Rec. 2020 RGB, or a suitable film-emulsion ICC). Disable conflicting automatic tone mapping such as base curve or filmic rgb; inspect any other enabled tone mapper rather than stacking it blindly. If using tone equalizer, place it after negadoctor as documented.
 
 ## 3. Calibrate the roll, then respect each scene
