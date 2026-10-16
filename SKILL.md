@@ -10,17 +10,17 @@ Use darktable's negadoctor workflow to produce natural, scene-aware positives. T
 
 ## Dependencies and boundaries
 
-- Require an installed `darktable-cli` with negadoctor support. The darktable GUI is the safest way to author or inspect an independent edit history; it may be needed when no verified headless parameter-editing method is available.
-- No bundled scripts or Python dependency. Temporary helpers are optional, task-local, and must not replace darktable's color-managed RAW pipeline with a naive inversion.
-- Never overwrite originals, existing sidecars, user libraries, or previously approved deliverables. Work on copies in a separate job directory.
-- Ask which files may be processed, which must be excluded, where private outputs belong, and whether previews may be shared. Processing approval is not publication approval.
+- Require an installed `darktable-cli` with negadoctor support. The darktable GUI is the safest way to author or inspect an edit history.
+- No bundled scripts. Task-local helpers are fine but must not replace darktable's color-managed RAW pipeline with a naive inversion.
+- Never overwrite originals, existing sidecars, user libraries, or approved deliverables. Work on copies in a separate job directory.
+- Confirm which files to process or exclude. Do not share previews or results beyond the user's request.
 
 ## 1. Inventory and isolate
 
-1. Record the installed darktable version, input types, frame identifiers, dimensions, existing sidecars, and embedded color profiles. Track which input corresponds to each working copy and independent XMP, along with requested output names. Record exclusions explicitly; detect duplicate names before rendering.
-2. Copy selected inputs and any histories needed as a starting point into a private working directory. Preserve user histories separately and edit only the working copies. Explicitly supply the intended independent XMP to every render; do not rely on automatic sidecar discovery.
-3. Use task-specific configuration, cache, temporary directory, and library. Do not point an experimental process at the user's normal configuration or database. Avoid concurrent writers to the same library/configuration.
-4. Inspect all frame orientations, not just a representative frame. Record the intended rotation/flip per frame. Apply orientation in the RAW/edit pipeline before final rendering, rather than rotating an exported JPEG. Ask about ambiguous orientations. Comparison previews should retain the agreed scan orientation unless the user requests otherwise.
+1. Note the darktable version, input types, existing sidecars, and embedded color profiles. Keep a clear mapping from each input to its working copy, XMP, and output name; check for duplicate names before rendering.
+2. Copy the selected inputs, and any histories you start from, into a private working directory and edit only the copies. Pass the intended XMP to every render explicitly instead of relying on sidecar discovery.
+3. Use a task-specific configuration, cache, temporary directory, and library, never the user's normal ones.
+4. Check the orientation of every frame, record the intended rotation/flip per frame, and apply it in the edit pipeline rather than rotating an exported JPEG. Ask about ambiguous frames. Keep comparison previews in the agreed scan orientation.
 
 Check the installed CLI, even when following this example:
 
@@ -30,13 +30,13 @@ darktable-cli --help
 darktable-cli --help icc-type
 ```
 
-Some builds return a nonzero exit status when printing help. Compare supported flags and profile names with the documentation for that installed release; the development manual may describe newer behavior.
+Some builds exit nonzero when printing help. Compare flags and profile names with the manual for the installed release; the development manual may describe newer behavior.
 
 ## 2. Prepare a verified edit history
 
-`darktable-cli` renders history from an XMP or library; it does not provide arbitrary per-module parameter flags. Do not invent `--negadoctor-*` flags or assume export `--conf` keys edit processing modules.
+`darktable-cli` renders the history in an XMP or library; it has no per-module parameter flags, so do not invent `--negadoctor-*` options.
 
-Prefer creating the independent history in an isolated darktable GUI session, then applying its XMP with the CLI. If modifying XMP through a temporary helper, first inspect the installed release's negadoctor parameter schema, module version, and serialization using matching source/documentation and a known-good GUI-generated sidecar. Preserve module ordering, versions, history, and unrelated settings. Never patch opaque parameter blobs by guessed offsets or copy unverified blobs across versions. If schema verification is unavailable, stop and request a GUI-authored sidecar rather than silently substituting a crude RGB inversion.
+Prefer authoring the history in an isolated darktable GUI session and applying its XMP with the CLI. To generate or modify XMP with a helper, first check the installed release's negadoctor parameter schema and module version against matching source or documentation and a known-good GUI-generated sidecar. Preserve module order, versions, history, and unrelated settings. Do not patch parameter blobs by guessed offsets or reuse them across versions. If the schema cannot be verified, ask for a GUI-authored sidecar instead of falling back to a crude RGB inversion.
 
 For camera scans, separate scan-light calibration from the original scene's lighting:
 
@@ -59,9 +59,9 @@ Roll-level film-base calibration is reusable; neutral references, exposure, and 
 
 ## 4. Render previews and iterate with the user
 
-Render a representative set first, covering the range of lighting, exposure, color, and tonal conditions present. Review at useful viewing size and inspect detail crops. Create labeled negative/positive comparisons with matching frame IDs, inclusion count, crop, and agreed orientation. If building the negative view outside darktable, convert from its actual embedded/known source ICC to the display profile; never merely label linear RGB data as sRGB. Ask when the source profile is unknown.
+Render a representative set first, covering the lighting, exposure, color, and tonal range of the roll. Review at useful size and check detail crops. Make labeled negative/positive comparisons with matching frame IDs and the agreed crop and orientation. If the negative view is built outside darktable, convert from its actual source ICC to the display profile; never just label linear RGB as sRGB. Ask when the source profile is unknown.
 
-The following POSIX-shell template assumes `INPUT_COPY` and `XMP` identify a working input and verified sidecar; `OUTPUT` is a new preview JPEG filename and `JOB` is a dedicated job directory. Create its `config`, `cache`, and `tmp` subdirectories first. `SRGB` is supported by some releases; verify the installed profile name before use. This preview example does not prescribe final delivery settings.
+Preview template (POSIX shell): `INPUT_COPY` and `XMP` are a working input and its verified sidecar, `OUTPUT` is a new preview JPEG, and `JOB` is a job directory with `config`, `cache`, and `tmp` subdirectories. Check the installed release's profile name before using `SRGB`. Final delivery settings are up to the user.
 
 ```sh
 darktable-cli "$INPUT_COPY" "$XMP" "$OUTPUT" \
@@ -72,11 +72,11 @@ darktable-cli "$INPUT_COPY" "$XMP" "$OUTPUT" \
   --conf plugins/imageio/format/jpeg/quality=95
 ```
 
-The JPEG extension selects the export format. The documented JPEG quality configuration is an export option, not a negadoctor setting. Review all enabled histories/defaults in the isolated configuration. Capture exit status and logs, and inspect the rendered file, dimensions, embedded output profile, clipping, and orientation; a successful process alone does not establish correct color.
+Check the exit status and logs, then inspect the rendered file's dimensions, output profile, clipping, and orientation. A successful exit does not mean the color is right.
 
-Show previews and disclose uncertainties. Obtain explicit approval of the look, frame selection, orientations, requested export settings, and output names **before batch exports**.
+Show previews, state any uncertainty, and get the user's approval of the look, frame selection, orientations, and output names **before batch export**.
 
-Representative preview approval is not final roll approval. Present a full-roll contact sheet or previews covering every included frame, collect user feedback across frames and scenes, revise requested frames or shared adjustments, and re-preview. Preserve accepted results and check that shared changes do not regress other frames. Repeat until the user explicitly confirms satisfaction with the entire roll before final delivery.
+Approval of a representative set is not approval of the roll. Show a contact sheet or previews of every included frame, take feedback per frame and scene, revise individual or shared adjustments, and re-preview. Keep accepted results and check that shared changes do not regress other frames. Repeat until the user confirms the entire roll, then deliver.
 
 ## 5. Deliver as requested
 
