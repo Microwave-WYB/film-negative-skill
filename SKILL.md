@@ -81,6 +81,7 @@ Approval of a representative set is not approval of the roll. Show a contact she
 ## 5. Deliver as requested
 
 - Export, package, and deliver in the format, color space, resolution, and packaging requested by the user.
+  - Example only, not a default: full-size JPEG at quality 95 in sRGB, delivered as a ZIP. Another user might want 16-bit TIFF in Display P3, or reduced-size JPEGs for sharing.
 - Use meaningful, correct file and ZIP entry timestamps, honoring the user's timestamp policy or existing appropriate dates. Set ZIP entry timestamps explicitly when needed; never leave an accidental default of 1980.
 
 ## Official references
